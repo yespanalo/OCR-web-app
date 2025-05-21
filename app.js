@@ -48,6 +48,22 @@ fileInput.addEventListener("change", () => {
         };
         reader.readAsDataURL(file);
     }
+    // else if (file.name.endsWith(".docx")) {
+    //     const reader = new FileReader();
+    //     reader.onload = function (event) {
+    //         mammoth.extractRawText({ arrayBuffer: event.target.result })
+    //             .then(function (result) {
+    //                 output.textContent = result.value;
+    //                 output.classList.remove("hidden");
+    //             })
+    //             .catch(function (err) {
+    //                 output.textContent = "DOCX Error: " + err.message;
+    //                 output.classList.remove("hidden");
+    //             });
+    //     };
+    //     reader.readAsArrayBuffer(file);
+    // }
+
 });
 
 function resetOCR() {
@@ -104,7 +120,21 @@ function performOCR() {
             });
         };
         fileReader.readAsArrayBuffer(file);
-    } else {
+    }
+    else if (file.name.endsWith(".docx")) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            mammoth.extractRawText({ arrayBuffer: event.target.result })
+                .then(function (result) {
+                    output.textContent = result.value;
+                })
+                .catch(function (err) {
+                    output.textContent = "DOCX Error: " + err.message;
+                });
+        };
+        reader.readAsArrayBuffer(file);
+    }
+    else {
         Tesseract.recognize(file, "eng", { logger: (m) => console.log(m) })
             .then(({ data: { text } }) => {
                 output.textContent = text;

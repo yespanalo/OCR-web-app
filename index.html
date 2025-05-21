@@ -6,10 +6,11 @@
     <title>OCR App - Image and PDF</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.1/dist/tesseract.min.js"></script>
+    <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
   </head>
   <body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="bg-white p-6 rounded-2xl shadow-md w-full max-w-xl">
+    <div class="bg-white p-6 rounded-2xl shadow-md w-full max-w-4xl">
       <h1 class="text-2xl font-bold mb-4 text-center">
         OCR Tool (Image or PDF)
       </h1>
@@ -17,7 +18,7 @@
       <input
         type="file"
         id="fileInput"
-        accept=".jpg,.jpeg,.png,.pdf"
+        accept=".jpg,.jpeg,.png,.pdf,,.docx"
         class="block w-full mb-4"
       />
 
