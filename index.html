@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OCR App - Image and PDF</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.1/dist/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-6 rounded-2xl shadow-md w-full max-w-xl">
+      <h1 class="text-2xl font-bold mb-4 text-center">
+        OCR Tool (Image or PDF)
+      </h1>
+
+      <input
+        type="file"
+        id="fileInput"
+        accept=".jpg,.jpeg,.png,.pdf"
+        class="block w-full mb-4"
+      />
+
+      <canvas
+        id="pdfCanvas"
+        class="mb-4 hidden w-full rounded-md shadow"
+        style="max-height: 300px"
+      ></canvas>
+      <img
+        id="imagePreview"
+        class="mb-4 hidden w-full rounded-md shadow object-contain max-h-64"
+      />
+
+      <button
+        onclick="performOCR()"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl mb-4"
+      >
+        Extract Text
+      </button>
+      <button
+        onclick="resetOCR()"
+        class="w-full bg-gray-100 py-2 px-4 rounded-xl mb-4"
+      >
+        Reset
+      </button>
+      <div
+        id="output"
+        class="bg-gray-100 p-4 rounded-xl text-sm whitespace-pre-wrap font-mono hidden"
+      ></div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
