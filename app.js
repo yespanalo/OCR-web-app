@@ -89,36 +89,49 @@ function performOCR() {
         fileReader.onload = function () {
             const typedArray = new Uint8Array(this.result);
             pdfjsLib.getDocument(typedArray).promise.then((pdf) => {
-                pdf.getPage(1).then((page) => {
-                    const scale = 2;
-                    const viewport = page.getViewport({ scale });
-                    const canvas = document.createElement("canvas");
-                    const context = canvas.getContext("2d");
+                const numPages = pdf.numPages;
+                let currentPage = 1;
+                let fullText = "";
 
-                    canvas.width = viewport.width;
-                    canvas.height = viewport.height;
+                const processPage = () => {
+                    if (currentPage > numPages) {
+                        output.textContent = fullText.trim();
+                        return;
+                    }
 
-                    page
-                        .render({
-                            canvasContext: context,
-                            viewport: viewport,
-                        })
-                        .promise.then(() => {
+                    pdf.getPage(currentPage).then((page) => {
+                        const scale = 2;
+                        const viewport = page.getViewport({ scale });
+                        const canvas = document.createElement("canvas");
+                        const context = canvas.getContext("2d");
+
+                        canvas.width = viewport.width;
+                        canvas.height = viewport.height;
+
+                        page.render({ canvasContext: context, viewport }).promise.then(() => {
                             canvas.toBlob((blob) => {
                                 Tesseract.recognize(blob, "eng", {
-                                    logger: (m) => console.log(m),
+                                    logger: (m) => console.log(`Page ${currentPage}:`, m),
                                 })
                                     .then(({ data: { text } }) => {
-                                        output.textContent = text;
+                                        fullText += `\n--- Page ${currentPage} ---\n${text}\n`;
+                                        currentPage++;
+                                        processPage(); // Recursively process next page
                                     })
                                     .catch((err) => {
-                                        output.textContent = "OCR Error: " + err.message;
+                                        fullText += `\n[Error reading page ${currentPage}: ${err.message}]\n`;
+                                        currentPage++;
+                                        processPage(); // Continue with next page even if one fails
                                     });
                             });
                         });
-                });
+                    });
+                };
+
+                processPage(); // Start processing pages
             });
         };
+
         fileReader.readAsArrayBuffer(file);
     }
     else if (file.name.endsWith(".docx")) {
