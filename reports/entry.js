@@ -1,4 +1,4 @@
-fetch("http://localhost/OCR - Copy/reports/get-all-reports.php")
+fetch("http://localhost/OCR/reports/get-all-reports.php")
     .then((res) => res.json())
     .then((res) => {
         document.getElementById("loading").style.display = "none";

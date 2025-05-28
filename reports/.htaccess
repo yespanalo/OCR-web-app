@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Remove .html extension
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^([^/]+)$ $1.html [L]
+
+# Optionally redirect to entry.html when accessing /reports/
+DirectoryIndex entry.html

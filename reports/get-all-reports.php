@@ -21,7 +21,7 @@ if ($conn->connect_error) {
     exit();
 }
 
-$sql = "SELECT id, patient_name, visit_date, createdAt FROM patient_visits ORDER BY id DESC"; // adjust table name
+$sql = "SELECT id, patient_name, visit_date, createdAt FROM patient_visits ORDER BY id DESC";
 $result = $conn->query($sql);
 
 $records = [];

@@ -5,7 +5,7 @@ if (!id) {
     document.getElementById("loading").innerText =
         "❌ No report ID provided.";
 } else {
-    fetch(`http://localhost/OCR - Copy/reports/get-report.php?id=${id}`)
+    fetch(`http://localhost/OCR/reports/get-report.php?id=${id}`)
         .then((res) => res.json())
         .then((res) => {
             document.getElementById("loading").style.display = "none";
@@ -29,7 +29,8 @@ if (!id) {
                         /_/g,
                         " "
                     )}:</div>
-                  <div class="text-gray-900 md:col-span-3">${value || "—"}</div>
+                  <div class="text-gray-900 md:col-span-3">${(value || "—").replace(/\n/g, "<br>")}</div>
+
                 `;
                     container.appendChild(field);
                 });

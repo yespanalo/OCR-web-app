@@ -230,11 +230,17 @@ function performOCR() {
 
                 const processPage = () => {
                     if (currentPage > numPages) {
-                        output.textContent = fullText.trim();
+                        const cleanedText = fullText
+                            .replace(/--- Page \d+ ---/g, "")
+                            .replace(/Page \d+ of \d+/gi, "")
+                            .replace(/\n{2,}/g, "\n\n")
+                            .trim();
 
-                        const sections = extractMedicalSections(fullText);
+                        output.textContent = cleanedText;
 
-                        fetch("http://localhost/OCR - Copy/upload.php", {
+                        const sections = extractMedicalSections(cleanedText);
+
+                        fetch("http://localhost/OCR/upload.php", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
@@ -269,19 +275,19 @@ function performOCR() {
                                     .then(({ data: { text } }) => {
                                         fullText += `\n--- Page ${currentPage} ---\n${text}\n`;
                                         currentPage++;
-                                        processPage(); // Recursively process next page
+                                        processPage();
                                     })
                                     .catch((err) => {
                                         fullText += `\n[Error reading page ${currentPage}: ${err.message}]\n`;
                                         currentPage++;
-                                        processPage(); // Continue with next page even if one fails
+                                        processPage();
                                     });
                             });
                         });
                     });
                 };
 
-                processPage(); // Start processing pages
+                processPage();
             });
         };
 
