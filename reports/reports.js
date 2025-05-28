@@ -15,7 +15,7 @@ if (!id) {
                 container.classList.remove("hidden");
 
                 Object.entries(data).forEach(([key, value]) => {
-                    if (key === "id") return; // Skip displaying the 'id' field
+                    if (key === "id") return;
 
                     const field = document.createElement("div");
                     field.classList.add(
