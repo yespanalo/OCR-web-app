@@ -1,0 +1,6 @@
+RewriteEngine On
+
+# If a request doesn't match an actual file or folder, try .html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
